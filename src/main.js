@@ -6,7 +6,7 @@ import Vue from 'vue'
 
 // 导入mui模块
 import './lib/mui/css/mui.min.css'
-import './lib/mui/css/icon-extra'
+import './lib/mui/css/icon-extra.css'
 
 
 // 按需导入mint-ul组件
