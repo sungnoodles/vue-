@@ -8,6 +8,8 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
+Vue.http.options.root = 'http://www.liulongbin.top:3005'
+
 
 // 1 导入路由包
 import VueRouter from 'vue-router'
@@ -17,22 +19,34 @@ Vue.use(VueRouter)
 import router from './router.js'
 
 
+import momemt from 'moment'
+Vue.filter('dateFormat', function (dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  return momemt(dataStr).format(pattern )
+})
+
+
 // 导入mui模块
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/icons-extra.css'
 
 
 // 按需导入mint-ul组件
-import { Header,Swipe, SwipeItem } from 'mint-ui'
-Vue.component(Header.name,Header)
+import {
+  Header,
+  Swipe,
+  SwipeItem,
+  Button
+} from 'mint-ui'
+Vue.component(Header.name, Header)
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Button.name, Button);
 
 //导入 App.vue组件
 import app from './App.vue'
 
 var vm = new Vue({
-  el:'#app',
+  el: '#app',
   render: c => c(app),
   router
 })
