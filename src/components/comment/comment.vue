@@ -2,9 +2,9 @@
   <div>
     <h3>发表评论</h3>
     <hr>
-    <textarea maxlength="120" placeholder="吐槽内容"></textarea>
+    <textarea maxlength="120" placeholder="吐槽内容" v-model="msg"></textarea>
 
-    <mt-button type='primary' size='large'>发表评论</mt-button>
+    <mt-button type='primary' size='large' @click="postComment">发表评论</mt-button>
 
     <div class="cmt-list">
         <div class="cmt-item" v-for="(item,i) in comments" :key="item.add_time">
@@ -23,11 +23,13 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
     data(){
         return {
             comments:[],
-            pageindex:1
+            pageindex:1,
+            msg:''
         }
     },
     created(){
@@ -43,6 +45,25 @@ export default {
         more(){
             this.pageindex++
             this.getComments()
+        },
+        postComment(){
+            if(this.msg.trim() === 0){
+                return Toast('您的评论内容不能为空')
+            }
+            var comment={};
+            this.$http.post('api/postcomment/'+this.$route.params.id,{ content:this.msg.trim() })
+            .then(res => {
+                var cmt = {
+                    user_name:"匿名用户",
+                    add_time: Date.now(),
+                    content: this.msg.trim()
+                }
+                console.log(cmt);
+                
+                this.comments.unshift(cmt)
+                this.msg=''
+                
+            })
         }
     },
     props:['id']

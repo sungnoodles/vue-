@@ -7,6 +7,7 @@ import member from './components/footbar/member.vue'
 import shoppingcar from './components/footbar/shoppingcar.vue'
 import newsList from './components/news/newsList.vue'
 import newInfo from './components/news/newInfo.vue'
+import photoList from './components/photos/photoList.vue'
 
 
 // 3. 创建路由对象
@@ -38,6 +39,10 @@ var router = new VueRouter({
     {
       path: '/home/newInfo/:id',
       component: newInfo
+    },
+    {
+      path:'/home/photoList',
+      component: photoList
     }
 
   ],
