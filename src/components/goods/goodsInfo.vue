@@ -65,7 +65,7 @@ export default {
       id: this.$route.params.goodsId,
       info: {},
       flag: false,
-      count : 1
+      count : 0
     };
   },
   methods: {
@@ -94,7 +94,10 @@ export default {
     },
     add() {
       this.flag = !this.flag;
-      console.log(this.count);
+      // 产品信息：{id:产品id，count：产品数量，price：产品价格，selected：是否选中的状态}
+      var good = {id:this.id,count: parseInt(this.count),price:this.info.market_price,selected:true}
+      this.$store.commit('addToCar',good)
+      this.$store.commit('newNum')
       
     },
     beforeEnter(el){

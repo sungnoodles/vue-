@@ -4,7 +4,74 @@
 // 导入vue模块
 import Vue from 'vue'
 
+
+// 导入全局less
 import './app.less'
+
+// 导入vuex
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
+var car = JSON.parse(localStorage.getItem('car') || '[]')
+var store = new Vuex.Store({
+  state: {
+    // car用于存储加入购物车的产品信息
+    // 产品信息：{id:产品id，count：产品数量，price：产品价格，selected：是否选中的状态}
+    car: car,
+    num: 0, //购物车的总数量
+  },
+  mutations: {
+    addToCar(state, good) {
+      var flag = true
+      state.car.forEach(item => {
+        if (item.id === good.id) {
+          item.count += parseInt(good.count)
+          flag = false
+          return true
+        }
+      })
+      if (flag) {
+        state.car.push(good)
+      }
+      localStorage.setItem('car', JSON.stringify(state.car))
+    },
+    newNum(state) {
+      // 更新购物车商品数量
+      state.num = 0
+      state.car.forEach(item => {
+        state.num += parseInt(item.count)
+      })
+    },
+    remove(state, id) {
+      state.car.some((item, index) => {
+        if (item.id === id) {
+          state.car.splice(index, 1);
+          console.log('shanchule');
+          
+          localStorage.setItem("car", JSON.stringify(state.car))
+        }
+        return true;
+      });
+    }
+  },
+  getters: {
+    getNumAndSum(state){
+      var o = {
+        num:0,
+        sum:0
+      }
+      state.car.forEach(item => {
+        if(item.selected){
+          o.num += parseInt(item.count)
+          o.sum += parseInt(item.count) * parseInt(item.price)
+        }
+      })
+      console.log(o);
+      
+      return o
+    }
+  }
+})
 
 // 导入vue-resource模块
 import VueResource from 'vue-resource'
@@ -65,5 +132,9 @@ import app from './App.vue'
 var vm = new Vue({
   el: '#app',
   render: c => c(app),
-  router
+  router,
+  store,
+  created() {
+    this.$store.commit('newNum')
+  }
 })
